@@ -1,15 +1,6 @@
 import React from "react";
 import "./UI.css";
 import { useState, useEffect } from "react";
-
-function modifiedInterface() {
-  return (
-    <>
-    <p>Modified Interface</p>
-    </>
-  )
-}
-
 function UIInterface() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -116,35 +107,39 @@ function UIInterface() {
           });
         }
         if (react_notes_title_array) {
-          react_notes_title_array.forEach((value, index) => {
+          react_notes_title_array.forEach((element, index) => {
             document
               .getElementById(`M${index}`)
               .addEventListener("click", () => {
-                function editNote(index) {
-                  function modify() {
-                    console.log("Hi");
-                  }
-                  let card_body = document.querySelector(".card-body");
-                  card_body.innerHTML = `
-                <h1>Take Notes</h1>
-                <form>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Edit Title of Note#${
-                          index + 1
-                        }</label>
-                            <input type="text" class="form-control" value='${title}' onChange='${handleTitle}' id="titleArea" placeholder="Enter Title of your note" autocomplete="off" />
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Enter Description of Note#${
-                          index + 1
-                        }</label>
-                            <textarea class="form-control" value='${content}' onChange='${handleContent}' id="descriptionArea" rows="3" placeholder="Enter Description of your note"></textarea>
-                    </div>
-                </form>
-                <button id="addBtn" class="btn btn-warning" onClick='${modify}'>Modify Note</button>
-                `;
+                let newTitle;
+                while (!newTitle) {
+                  newTitle = window.prompt(
+                    `Enter Title of note #${
+                      index + 1
+                    } [TITLE SHOULD NOT BE BLANK]`
+                  );
                 }
-                editNote(index);
+                let newContent = window.prompt(
+                  `Enter content of note #${index + 1}`
+                );
+                let currentDate = new Date();
+                react_notes_title_array[index] = newTitle;
+                react_notes_content_array[index] = newContent;
+                react_notes_date_array[index] = currentDate.toDateString();
+                localStorage.setItem(
+                  "REACT_NOTES_TITLE",
+                  JSON.stringify(react_notes_title_array)
+                );
+                localStorage.setItem(
+                  "REACT_NOTES_CONTENT",
+                  JSON.stringify(react_notes_content_array)
+                );
+                localStorage.setItem(
+                  "REACT_NOTES_DATE",
+                  JSON.stringify(react_notes_date_array)
+                );
+                alert(`Note #${index + 1} successfully changed!`);
+                showNotes();
               });
           });
         }
