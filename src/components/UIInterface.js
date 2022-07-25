@@ -1,4 +1,5 @@
 import React from "react";
+import "./UI.css";
 import { useState, useEffect } from "react";
 function UIInterface() {
   const [title, setTitle] = useState("");
@@ -48,6 +49,68 @@ function UIInterface() {
       setContent("");
     }
   }
+  useEffect(() => {
+    function showNotes() {
+      let react_notes_title_array = [];
+      let react_notes_content_array = [];
+      let react_notes_date_array = [];
+      let reactnotesTitle = localStorage.getItem("REACT_NOTES_TITLE");
+      let reactnotesContent = localStorage.getItem("REACT_NOTES_CONTENT");
+      let reactnotesDate = localStorage.getItem("REACT_NOTES_DATE");
+      if (reactnotesTitle) {
+        react_notes_title_array = JSON.parse(reactnotesTitle);
+      }
+      if (reactnotesContent) {
+        react_notes_content_array = JSON.parse(reactnotesContent);
+      }
+      if (reactnotesDate) {
+        react_notes_date_array = JSON.parse(reactnotesDate);
+      }
+      if (react_notes_title_array.length === 0) {
+        document.getElementById("notes").innerHTML = `<p>No notes to show</p>`;
+      } else {
+        let htmlContent = "";
+        for (let i = 0; i < react_notes_title_array.length; i++) {
+          htmlContent += `<div class="card mx-3 my-3" id='cardBody' style="width: 18rem;">
+                        <div class="card-body scroll" id='cardBody'>
+                            <h5 class="card-title">${react_notes_title_array[i]}</h5>
+                            <p class="card-text">${react_notes_content_array[i]}</p>             
+                              <button class="btn btn-primary mx-2" id='edit'>Edit Note</button>
+                              <button class="btn btn-danger" id='D${i}'>Delete Note</button>                     
+                            <p>Added on ${react_notes_date_array[i]}</p>
+                        </div>
+                      </div>`;
+        }
+        document.getElementById("notes").innerHTML = htmlContent;
+        if (react_notes_title_array) {
+          react_notes_title_array.forEach((value, index) => {
+            document
+              .getElementById(`D${index}`)
+              .addEventListener("click", () => {
+                react_notes_title_array.splice(index, 1);
+                react_notes_content_array.splice(index, 1);
+                react_notes_date_array.splice(index, 1);
+                localStorage.setItem(
+                  "REACT_NOTES_TITLE",
+                  JSON.stringify(react_notes_title_array)
+                );
+                localStorage.setItem(
+                  "REACT_NOTES_CONTENT",
+                  JSON.stringify(react_notes_content_array)
+                );
+                localStorage.setItem(
+                  "REACT_NOTES_DATE",
+                  JSON.stringify(react_notes_date_array)
+                );
+                showNotes();
+              });
+          });
+        }
+      }
+    }
+    showNotes();
+  });
+
   return (
     <>
       <div className="container mx-14 my-3">
