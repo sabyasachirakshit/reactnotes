@@ -1,6 +1,53 @@
 import React from "react";
-
+import { useState, useEffect } from "react";
 function UIInterface() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const handleTitle = (event) => {
+    setTitle(event.target.value);
+  };
+  const handleContent = (event) => {
+    setContent(event.target.value);
+  };
+  function addObjective() {
+    let react_notes_title_array = [];
+    let react_notes_content_array = [];
+    let react_notes_date_array = [];
+    let reactnotesTitle = localStorage.getItem("REACT_NOTES_TITLE");
+    let reactnotesContent = localStorage.getItem("REACT_NOTES_CONTENT");
+    let reactnotesDate = localStorage.getItem("REACT_NOTES_DATE");
+    if (reactnotesTitle) {
+      react_notes_title_array = JSON.parse(reactnotesTitle);
+    }
+    if (reactnotesContent) {
+      react_notes_content_array = JSON.parse(reactnotesContent);
+    }
+    if (reactnotesDate) {
+      react_notes_date_array = JSON.parse(reactnotesDate);
+    }
+    if (title === "") {
+      alert("Please Add Title of your Note!");
+    } else {
+      react_notes_title_array.push(title);
+      react_notes_content_array.push(content);
+      let currentDate = new Date();
+      react_notes_date_array.push(currentDate.toDateString());
+      localStorage.setItem(
+        "REACT_NOTES_TITLE",
+        JSON.stringify(react_notes_title_array)
+      );
+      localStorage.setItem(
+        "REACT_NOTES_CONTENT",
+        JSON.stringify(react_notes_content_array)
+      );
+      localStorage.setItem(
+        "REACT_NOTES_DATE",
+        JSON.stringify(react_notes_date_array)
+      );
+      setTitle("");
+      setContent("");
+    }
+  }
   return (
     <>
       <div className="container mx-14 my-3">
@@ -13,6 +60,8 @@ function UIInterface() {
                 className="form-control"
                 id="addTitle"
                 rows="1"
+                value={title}
+                onChange={handleTitle}
               ></textarea>
               <br />
               <h5>Add Note Content:</h5>
@@ -20,9 +69,15 @@ function UIInterface() {
                 className="form-control"
                 id="addTxt"
                 rows="3"
+                value={content}
+                onChange={handleContent}
               ></textarea>
             </div>
-            <button className="btn btn-success" id="addBtn">
+            <button
+              className="btn btn-success"
+              id="addBtn"
+              onClick={addObjective}
+            >
               Add Note
             </button>
           </div>
