@@ -1,6 +1,15 @@
 import React from "react";
 import "./UI.css";
 import { useState, useEffect } from "react";
+
+function modifiedInterface() {
+  return (
+    <>
+    <p>Modified Interface</p>
+    </>
+  )
+}
+
 function UIInterface() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -75,7 +84,7 @@ function UIInterface() {
                         <div class="card-body scroll" id='cardBody'>
                             <h5 class="card-title">${react_notes_title_array[i]}</h5>
                             <p class="card-text">${react_notes_content_array[i]}</p>             
-                              <button class="btn btn-primary mx-2" id='edit'>Edit Note</button>
+                              <button class="btn btn-primary mx-2" id='M${i}'>Edit Note</button>
                               <button class="btn btn-danger" id='D${i}'>Delete Note</button>                     
                             <p>Added on ${react_notes_date_array[i]}</p>
                         </div>
@@ -103,6 +112,39 @@ function UIInterface() {
                   JSON.stringify(react_notes_date_array)
                 );
                 showNotes();
+              });
+          });
+        }
+        if (react_notes_title_array) {
+          react_notes_title_array.forEach((value, index) => {
+            document
+              .getElementById(`M${index}`)
+              .addEventListener("click", () => {
+                function editNote(index) {
+                  function modify() {
+                    console.log("Hi");
+                  }
+                  let card_body = document.querySelector(".card-body");
+                  card_body.innerHTML = `
+                <h1>Take Notes</h1>
+                <form>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Edit Title of Note#${
+                          index + 1
+                        }</label>
+                            <input type="text" class="form-control" value='${title}' onChange='${handleTitle}' id="titleArea" placeholder="Enter Title of your note" autocomplete="off" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Enter Description of Note#${
+                          index + 1
+                        }</label>
+                            <textarea class="form-control" value='${content}' onChange='${handleContent}' id="descriptionArea" rows="3" placeholder="Enter Description of your note"></textarea>
+                    </div>
+                </form>
+                <button id="addBtn" class="btn btn-warning" onClick='${modify}'>Modify Note</button>
+                `;
+                }
+                editNote(index);
               });
           });
         }
