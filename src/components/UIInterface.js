@@ -122,18 +122,20 @@ function UIInterface() {
                 let newContent = window.prompt(
                   `Enter content of note #${index + 1}`
                 );
+                if (newContent) {
+                  react_notes_content_array[index] = newContent;
+                  localStorage.setItem(
+                    "REACT_NOTES_CONTENT",
+                    JSON.stringify(react_notes_content_array)
+                  );
+                }
                 let currentDate = new Date();
                 react_notes_title_array[index] = newTitle;
-                react_notes_content_array[index] = newContent;
                 react_notes_date_array[index] = currentDate.toDateString();
                 localStorage.setItem(
                   "REACT_NOTES_TITLE",
                   JSON.stringify(react_notes_title_array)
-                );
-                localStorage.setItem(
-                  "REACT_NOTES_CONTENT",
-                  JSON.stringify(react_notes_content_array)
-                );
+                );               
                 localStorage.setItem(
                   "REACT_NOTES_DATE",
                   JSON.stringify(react_notes_date_array)

@@ -5,7 +5,7 @@ function Navbar() {
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <a className="navbar-brand" href="/">
-          Notes Taker
+          React Notes Taker
         </a>
         <button
           className="navbar-toggler"
